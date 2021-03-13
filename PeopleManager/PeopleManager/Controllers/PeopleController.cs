@@ -2,6 +2,7 @@
 using PeopleManager.service;
 using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace PeopleManager.Controllers
 {
@@ -12,21 +13,21 @@ namespace PeopleManager.Controllers
         private PeopleService peopleService = PeopleService.getInstance();
 
         [HttpGet]
-        public IActionResult GetAllPeoples() {
-            return Ok(peopleService.GetPeoples());
+        public async Task<IActionResult> GetAllPeoples() {
+            return Ok(await peopleService.GetPeoples());
         }
 
         [HttpPost]
-        public IActionResult AddPeople(model.People people)
+        public async Task<IActionResult> AddPeople(model.People people)
         {
-            bool add = peopleService.AddPeople(people);
+            bool add = await peopleService.AddPeople(people);
             if (add) return Accepted();
             else return BadRequest("");
         }
-
+ 
         [HttpDelete]
-        public IActionResult RemovePeople(model.People people) {
-            bool isRemove = peopleService.RemovePeople(people);
+        public async Task<IActionResult> RemovePeople(model.People people) {
+            bool isRemove = await peopleService .RemovePeople(people);
             if (isRemove) return Accepted();
             else return BadRequest();
         }

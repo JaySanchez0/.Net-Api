@@ -25,25 +25,24 @@ namespace PeopleManager.service
             peoples = new ConcurrentBag<model.People>();
         }
 
-        public ConcurrentBag<model.People> GetPeoples() => peoples;
+        public async Task<ConcurrentBag<model.People>> GetPeoples() => peoples;
 
-        public model.People GetPeople(int documentNumber) {
+        public async Task<model.People> GetPeople(int documentNumber) {
             foreach (model.People people in this.peoples) {
                 if (people.DocumentNumber == documentNumber) return people;
             }
             return null;
         }
 
-        public bool AddPeople(model.People people){
-            if (GetPeople(people.DocumentNumber) != null)
+        public async Task<bool> AddPeople(model.People people){
+            if (await GetPeople(people.DocumentNumber) != null)
                 return false;
             peoples.Add(people);
             return true;
         }
 
-        internal bool RemovePeople(People people)
-        {
-            if (GetPeople(people.DocumentNumber) == null) return false;
+        public async Task<bool> RemovePeople(People people){
+            if (await GetPeople(people.DocumentNumber) == null) return false;
             return peoples.TryTake(out people);
         }
 
