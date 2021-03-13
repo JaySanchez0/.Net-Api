@@ -2,9 +2,6 @@
 using PeopleManager.service;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PeopleManager.Controllers
 {
@@ -12,11 +9,26 @@ namespace PeopleManager.Controllers
     [ApiController]
     public class PeopleController : Controller
     {
-        private PeopleService peopleService = new PeopleService();
+        private PeopleService peopleService = PeopleService.getInstance();
+
+        public PeopleController():base() {
+        }
 
         [HttpGet]
-        public ConcurrentBag<model.People> GetAllPeoples() {
-            return peopleService.GetPeoples();
+        public IActionResult GetAllPeoples() {
+            return Ok(peopleService.GetPeoples());
+        }
+
+        [HttpPost]
+        public IActionResult AddPeople(model.People people)
+        {
+            try{
+                peopleService.AddPeople(people);
+                return Accepted();
+            }
+            catch (Exception e) {
+                return BadRequest();
+            }
         }
     }
 }

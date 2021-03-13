@@ -1,4 +1,4 @@
-﻿using PeopleManager.Exception;
+﻿using PeopleManager.exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +8,26 @@ namespace PeopleManager.model
 {
     public class People
     {
-        public string name;
+        private string _name;
 
-        private int age;
+        public string Name { get=>_name; set { _name = value; } } 
 
-        private int documentNumber;
+        private int _age;
+        public int Age { get => _age; set { _age = value; } }
 
-        public int GetAge()
+        private int _documentNumber;
+
+        public int DocumentNumber { get => _documentNumber; set { _documentNumber = value; } }
+
+        public People() {
+
+        }
+
+        public People(string name, int age, int documentNumber) : base()
         {
-            return age;
-        }
-
-        public void SetAge(int value)
-        {
-            if (value < 0) throw new PeopleException("Invalid Age");
-            age = value;
-        }
-
-
-        public int GetDocumentNumber()
-        {
-            return documentNumber;
-        }
-
-        public void SetDocumentNumber(int value)
-        {
-            documentNumber = value;
-        }
-
-        public string GetName() {
-            return name;
-        }
-
-        public void SetName(string value) {
-            name = value;
+            this._name = name;
+            this._age = age;
+            this._documentNumber = documentNumber;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using PeopleManager.Exception;
+﻿using PeopleManager.exception;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,24 +11,37 @@ namespace PeopleManager.service
     {
         private ConcurrentBag<model.People> peoples;
 
-        public PeopleService() {
+        private static PeopleService instance;
+
+        public static PeopleService getInstance() {
+            if (instance == null){
+                instance = new PeopleService();
+                instance.AddPeople(new model.People("Juan", 3, 1));
+            }
+            return instance;
+        }
+        private PeopleService() {
             peoples = new ConcurrentBag<model.People>();
         }
 
         public ConcurrentBag<model.People> GetPeoples() => peoples;
 
         public model.People GetPeople(int documentNumber) {
-            return peoples.ToList().Find(p => p.GetDocumentNumber() == documentNumber);
+            foreach (model.People people in this.peoples) {
+                if (people.DocumentNumber == documentNumber) return people;
+            }
+            return null;
         }
 
         public void AddPeople(model.People people){
-            if (GetPeople(people.GetDocumentNumber()) != null) 
-                   throw new PeopleException("Exist a user with same Identification");
-            peoples.Add(people);
+            Console.WriteLine("Entro add");
+                //if (GetPeople(people.DocumentNumber) != null)
+                //    throw new PeopleException("Exist a user with same Identification");
+                peoples.Add(people);
         }
 
         public void DeletePeople(model.People people) { 
-            if(GetPeople(people.GetDocumentNumber())==null)
+            if(GetPeople(people.DocumentNumber)==null)
                 throw new PeopleException("Unexist user");
         }
 
