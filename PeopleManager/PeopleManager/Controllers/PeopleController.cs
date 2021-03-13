@@ -11,9 +11,6 @@ namespace PeopleManager.Controllers
     {
         private PeopleService peopleService = PeopleService.getInstance();
 
-        public PeopleController():base() {
-        }
-
         [HttpGet]
         public IActionResult GetAllPeoples() {
             return Ok(peopleService.GetPeoples());
@@ -22,13 +19,16 @@ namespace PeopleManager.Controllers
         [HttpPost]
         public IActionResult AddPeople(model.People people)
         {
-            try{
-                peopleService.AddPeople(people);
-                return Accepted();
-            }
-            catch (Exception e) {
-                return BadRequest();
-            }
+            bool add = peopleService.AddPeople(people);
+            if (add) return Accepted();
+            else return BadRequest("");
+        }
+
+        [HttpDelete]
+        public IActionResult RemovePeople(model.People people) {
+            bool isRemove = peopleService.RemovePeople(people);
+            if (isRemove) return Accepted();
+            else return BadRequest();
         }
     }
 }

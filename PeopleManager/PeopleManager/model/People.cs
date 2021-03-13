@@ -29,5 +29,11 @@ namespace PeopleManager.model
             this._age = age;
             this._documentNumber = documentNumber;
         }
+
+        public override bool Equals(object? obj) {
+            if (!(obj is People)) return false;
+            People people = (People)obj;
+           return people.DocumentNumber== DocumentNumber;
+        }
     }
 }

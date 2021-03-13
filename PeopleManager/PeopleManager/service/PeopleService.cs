@@ -1,4 +1,5 @@
 ﻿using PeopleManager.exception;
+using PeopleManager.model;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,16 +34,17 @@ namespace PeopleManager.service
             return null;
         }
 
-        public void AddPeople(model.People people){
-            Console.WriteLine("Entro add");
-                //if (GetPeople(people.DocumentNumber) != null)
-                //    throw new PeopleException("Exist a user with same Identification");
-                peoples.Add(people);
+        public bool AddPeople(model.People people){
+            if (GetPeople(people.DocumentNumber) != null)
+                return false;
+            peoples.Add(people);
+            return true;
         }
 
-        public void DeletePeople(model.People people) { 
-            if(GetPeople(people.DocumentNumber)==null)
-                throw new PeopleException("Unexist user");
+        internal bool RemovePeople(People people)
+        {
+            if (GetPeople(people.DocumentNumber) == null) return false;
+            return peoples.TryTake(out people);
         }
 
     }
