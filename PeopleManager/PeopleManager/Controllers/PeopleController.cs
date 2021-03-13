@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PeopleManager.service;
-using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace PeopleManager.Controllers
@@ -10,7 +8,11 @@ namespace PeopleManager.Controllers
     [ApiController]
     public class PeopleController : Controller
     {
-        private PeopleService peopleService = PeopleService.getInstance();
+        private PeopleService peopleService;
+
+        public PeopleController(PeopleService service):base() {
+            peopleService = service;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllPeoples() {
